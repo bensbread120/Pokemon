@@ -7,6 +7,8 @@ class Vector2 {
     int x;
     int y;
     Vector2(int x, int y);
+    void set(Vector2 other);
+    int distance(Vector2 other);
 };
 
 #endif
