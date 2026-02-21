@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include <string>
-#include "Vector2.h"
+#include "lib/Vector2.h"
 
 int main(int argc, char* argv[]) {
     // Init SDL systems
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     // Load font and create a texture from text
     TTF_Font* font = TTF_OpenFont("display/OpenSans-Regular.ttf", 28); // Include a .ttf font
     SDL_Color white = {255, 255, 255};
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, "Hello SDL2 using vector2", white);
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, "Hello SDL2 using vector2 22", white);
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_Rect textRect = {50, 50, textSurface->w, textSurface->h};
     SDL_FreeSurface(textSurface);
