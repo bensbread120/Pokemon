@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include "Vector2.h"
 
 int main(int argc, char* argv[]) {
     // Init SDL systems
@@ -21,21 +22,24 @@ int main(int argc, char* argv[]) {
     SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     // Load image texture
-    SDL_Texture* image = IMG_LoadTexture(renderer, "spaceship.png");  // PNG file in same folder
+    SDL_Texture* image = IMG_LoadTexture(renderer, "display/spaceship.png");  // PNG file in same folder
     if (!image) {
         std::cerr << "Image load error: " << IMG_GetError() << "\n";
     }
+    Vector2 imageLoc = Vector2(550, 400);
+    int imageWidth = 200;
+    int imageHeight = 150;
 
     // Load font and create a texture from text
-    TTF_Font* font = TTF_OpenFont("OpenSans-Regular.ttf", 28); // Include a .ttf font
+    TTF_Font* font = TTF_OpenFont("display/OpenSans-Regular.ttf", 28); // Include a .ttf font
     SDL_Color white = {255, 255, 255};
-    SDL_Surface* textSurface = TTF_RenderText_Blended(font, "Hello SDL2", white);
+    SDL_Surface* textSurface = TTF_RenderText_Blended(font, "Hello SDL2 using vector2", white);
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
     SDL_Rect textRect = {50, 50, textSurface->w, textSurface->h};
     SDL_FreeSurface(textSurface);
 
     // Load sound
-    Mix_Chunk* sound = Mix_LoadWAV("Movement2.wav"); // Include a short sound effect
+    Mix_Chunk* sound = Mix_LoadWAV("display/Movement2.wav"); // Include a short sound effect
 
     bool quit = false;
     SDL_Event event;
@@ -51,6 +55,16 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_KEYDOWN) {
                 if (event.key.keysym.sym == SDLK_SPACE) {
                     Mix_PlayChannel(-1, sound, 0); // Play sound on spacebar
+                } else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    quit = true; // quit when escape key is pressed.
+                } else if (event.key.keysym.sym == SDLK_UP) {
+                    imageLoc.y-=3;
+                } else if (event.key.keysym.sym == SDLK_DOWN) {
+                    imageLoc.y+=3;
+                } else if (event.key.keysym.sym == SDLK_RIGHT) {
+                    imageLoc.x+=3;
+                } else if (event.key.keysym.sym == SDLK_LEFT) {
+                    imageLoc.x-=3;
                 }
             }
         }
@@ -69,7 +83,7 @@ int main(int argc, char* argv[]) {
 
         // Draw image
         if (image) {
-            SDL_Rect imgRect = {550, 400, 200, 150};
+            SDL_Rect imgRect = {imageLoc.x, imageLoc.y, imageWidth, imageHeight};
             SDL_RenderCopy(renderer, image, NULL, &imgRect);
         }
 
